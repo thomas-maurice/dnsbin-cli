@@ -8,13 +8,13 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
     readme = f.read()
 
 setup(
-    name='dnsbin',
+    name='dnsbin-cli',
     version='0.0.1',
     description='Distribute and retrieve files using DNS',
     long_description=readme,
     author='Thomas Maurice',
     author_email='thomas@maurice.fr',
-    url='https://github.com/thomas-maurice/dnsbin',
+    url='https://github.com/thomas-maurice/dnsbin-cli',
     platforms='any',
     include_package_data=True,
     classifiers=[
