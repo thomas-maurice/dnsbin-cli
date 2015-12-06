@@ -9,7 +9,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
 
 setup(
     name='dnsbin-cli',
-    version='0.0.1',
+    version='0.0.2',
     description='Distribute and retrieve files using DNS',
     long_description=readme,
     author='Thomas Maurice',
