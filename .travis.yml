@@ -1,0 +1,16 @@
+language: python
+python:
+  - "2.7"
+env:
+  - COMMIT=${TRAVIS_COMMIT::8}
+install: "pip install -r requirements.txt"
+script: nosetests
+deploy:
+  provider: pypi
+  user: tmaurice
+  password:
+    secure: EyL0KPxhlRemFXgAyrzdYFE0krHCLYrD6DfZLk41sCeyq3TLpcP6K7eBcGntJtuLS+QkOy08R+MHCA2ebId+VCZ/pGZOZxiv+h1+iO9/XLnChCG864+60OQyc6GFt75TgxOsBodLj9hYy2bw90lBiTnX7umLJbw1KPSzAogJyeQu3OMINzFv4DI8a2v01Y3eezmFJ/0uFeQEh44bdvfdghO9DAZRANvc2Kj1xPHnAyYtHB3G+vZq2iHsw6tYI3rApSE/tzismamDvZ9DdKz7EsQ5BAnIfkpREgFI1Ls+Z+XFVF6Gea8Kin5UK2KaM6Y2oDPkY4xXVs2aD9P9jSRHI0uKcopEPkS17SGBt1m0ZBREICTNSOFaQijtN36C7J1dYQWptl0fZ7wbrIjtooHEfvicsS22b9BvZ9ujOc9bp/q0VK60dhXvP9+Evyva842tTQqmus7lPYeZ4xP22voH7MXzaVbqeL/kvTzQBRlYUqqGflFxwEXSEuQPolyVne0qzq6BHm/VqpL6Li0Zm/iBTPw/EnUgs2rKGVlWorqn4frZom8gEDtDnaSoNnnls2KcFck6OJvyCi2GoBBLdVTUeH+nIAElBJpTQZXYYvzh1vi/bzpa4+YQQnDrG6fPnG7DOkq9CQK0uU2Y7cb/dA6GDsCB/7R8/xjfbH1tZpQTmCQ=
+  on:
+    tags: true
+    repo: thomas-maurice/dnsbin-cli
+    python: "2.7"

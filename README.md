@@ -1,4 +1,6 @@
 # dnsbin-cli
+[![Build Status](https://travis-ci.org/thomas-maurice/dnsbin-cli.svg?branch=v0.0.1)](https://travis-ci.org/thomas-maurice/dnsbin-cli)
+
 This is the commandline for the dnsbin project (https://github.com/thomas-maurice/dnsbin)
 
 # Using the commandline

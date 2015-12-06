@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 
 import os
-import config
 
 from setuptools import setup
 
-with open(os.path.join(os.path.dirname(__file__), '../README.md')) as f:
+with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
     readme = f.read()
 
 setup(
     name='dnsbin',
-    version=config.version,
+    version='0.0.1',
     description='Distribute and retrieve files using DNS',
     long_description=readme,
     author='Thomas Maurice',
