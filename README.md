@@ -32,4 +32,17 @@ Your paste :
  ... The text you did paste ! ...
 ```
 
-That was easy :)
+## Encrypting a paste with AES
+You can now encrypt pastes with AES. You have to use the following syntax :
+```bash
+./bin/dnsbin post 172.17.42.1 bin/dnsbin --aes
+Encrypting paste with key Kfx0JPViOnQmhqRe
+6e151dc9-ea37-421b-b635-d2fc0f4877a6
+```
+
+And you can retrieve it with :
+```bash
+./bin/dnsbin get 172.17.42.1 6e151dc9-ea37-421b-b635-d2fc0f4877a6 --key Kfx0JPViOnQmhqRe
+```
+
+Please note that the file will be padded to reach a lengh that is multiple of 16.
