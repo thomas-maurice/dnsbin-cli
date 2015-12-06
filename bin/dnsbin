@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 You do need to issue the following command first :
@@ -42,35 +43,50 @@ Your paste :
 """
 
 from clifactory import CommandLineInterface, Argument
+from Crypto.Cipher import AES
 import dns.resolver
 import argparse
 import requests
 import socket
+import string
+import random
 import base64
 import json
 
 cli = CommandLineInterface()
 
+def generate_key(chars=string.letters + string.digits):
+    return ''.join(random.choice(chars) for _ in range(16))
+
+def pad_with(s, char=" ", num=16):
+    """pads the string s with char char, to have a num multiple length"""
+    return s + char * (num-len(s) % num)
+
 @cli.endpoint(
     Argument('server', metavar='ADDR', type=str, help="Server to push onto"),
-    Argument('file', metavar='FILE', type=str, help="File to upload")
+    Argument('file', metavar='FILE', type=str, help="File to upload"),
+    Argument('--aes', action="store_true", help="Do we AES encrypt the key ?")
 )
 def do_post(args):
     f = open(args.file, 'r')
     data = f.read()
     f.close()
-    try:
-        data.decode('ascii')
-    except UnicodeDecodeError:
-        print "Data is not ASCII, encoding it into base 64"
-        data = base64.b64encode(data)
+    if args.aes:
+        key = generate_key()
+        print "Encrypting paste with key %s" % key
+        cipher = AES.new(key, AES.MODE_CBC, key)
+        data = cipher.encrypt(pad_with(data))
+    data = base64.b64encode(data)
     resp = requests.post("http://%s/paste" % args.server, json={"data": data})
-    print resp.json()['data']['paste']
+    if resp.status_code == 200:
+        print resp.json()['data']['paste']
+    else:
+        print "An error occured :( - %d: %s" % (resp.status_code, resp.text)
 
 @cli.endpoint(
     Argument('server', metavar='ADDR', type=str, help="Server to retrieve from"),
     Argument('paste', metavar='UUID', type=str, help="Paste to get"),
-    Argument('--decode', action='store_true', help="Do we have to decode the value ?")
+    Argument('--key', metavar='KEY', type=str, help='AES decoding key', default=None)
 )
 def do_get(args):
     resolver = dns.resolver.Resolver()
@@ -78,7 +94,6 @@ def do_get(args):
     answer = resolver.query("%s.paste" % args.paste, 'TXT')
     size = 0
     for data in answer:
-        print data
         size = int(str(data).replace("\"", ""))
     print "Paste is %d chunks long" % size
     data = ""
@@ -87,11 +102,12 @@ def do_get(args):
         answer = resolver.query("%d.%s.paste" % (chunk_id, args.paste), 'TXT')
         for chunk in answer:
             data += str(chunk)
-    print "Your paste :\n"
-    if args.decode:
-        print base64.b64decode(data)
-    else:
-        print data
+    data = base64.b64decode(data)
+    if args.key:
+        cipher = AES.new(args.key, AES.MODE_CBC, args.key)
+        data = cipher.decrypt(data)
+    print "Your paste :"
+    print data
 
 args = cli.parser.parse_args()
 args.func(args)
