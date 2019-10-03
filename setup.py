@@ -27,7 +27,7 @@ setup(
     install_requires=[
         'dnspython==1.12.0',
         'clifactory==0.1.1',
-        'requests==2.8.1',
+        'requests==2.20.0',
         'pycrypto==2.6.1',
     ],
     scripts = ["bin/dnsbin"], 
